@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {Section, Col, Preloader} from 'react-materialize';
+import {Col, Preloader} from 'react-materialize';
 import Header from './components/Header';
 
 class App extends Component {
 
   constructor(props) {
-    super();
+    super(props);
+
     this.state = {
 	historicalData: null,
 	currency: 'PHP'
@@ -20,6 +21,7 @@ class App extends Component {
   }
 
   componentDidMount () {
+    this.getBitcoinData();
     this.interval = setInterval(() => this.getBitcoinData(), 10000);
   }
 
@@ -28,23 +30,24 @@ class App extends Component {
   }
 
   render() {
+    let content;
 
-    let content = "";
-
-    if ( ! this.state.historicalData ) {
+    if ( !this.state.historicalData ) {
         content = <Col s={4}><Preloader flashing/></Col>;
     } else {
-        console.log(this.state.historicalData);
+        content = Object.keys(this.state.historicalData.bpi).map((key) => 
+            <li key={key}>
+                {key}: {this.state.historicalData.bpi[key]}
+            </li>
+        );
     }
 
     return (
       <div>
-	    <header>
-              <Header title='Hey'/>
-	    </header>
-        <Section>
-          {content}
-        </Section>
+        <Header title='Hey'/>
+        <div id='content'>
+            <ul>{content}</ul>
+        </div>
       </div>
     );
   }
