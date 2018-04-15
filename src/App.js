@@ -6,7 +6,10 @@ class App extends Component {
 
   constructor(props) {
     super();
-    this.state = {historicalData: null, currency: 'PHP'};
+    this.state = {
+	historicalData: null,
+	currency: 'PHP'
+    };
   }
 
   getBitcoinData () {
@@ -17,7 +20,11 @@ class App extends Component {
   }
 
   componentDidMount () {
-    this.getBitcoinData()
+    this.interval = setInterval(() => this.getBitcoinData(), 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
